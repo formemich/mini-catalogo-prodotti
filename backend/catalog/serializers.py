@@ -12,3 +12,8 @@ class ProductSerializer(serializers.ModelSerializer):
     class Meta:
         model = Product
         fields = ['id', 'name', 'description', 'price', 'category_id', 'tags', 'created_at']
+
+    def validate_price(self, value):
+        if value < 0:
+            raise serializers.ValidationError("Il prezzo non può essere negativo.")
+        return value
