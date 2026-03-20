@@ -1,10 +1,10 @@
 import django_filters
-from django.shortcuts import render
 from django_filters.rest_framework import DjangoFilterBackend
 from rest_framework import viewsets, filters
 
 from catalog.models import Product, Category
 from catalog.serializers import ProductSerializer, CategorySerializer
+from rest_framework import mixins
 
 
 class ProductFilter(django_filters.FilterSet):
@@ -26,6 +26,8 @@ class ProductViewSet(viewsets.ModelViewSet):
     search_fields = ('name', 'tags')
     ordering_fields = ('price', 'created_at')
 
-class CategoryViewSet(viewsets.ModelViewSet):
+class CategoryViewSet(mixins.CreateModelMixin,
+                      mixins.ListModelMixin,
+                      viewsets.GenericViewSet):
     queryset = Category.objects.all()
     serializer_class = CategorySerializer
