@@ -15,17 +15,17 @@ Il modo più veloce per avviare il progetto è tramite Docker.
    ```bash
    git clone <url-tua-repo>
    cd mini-catalogo
-     ```
+   ```
 
 2. Avvia i container:
    ```bash
-    docker-compose up --build
-    ```
+   docker-compose up --build
+   ```
 
 3. Inizializza il db (Facoltativo):
    ```bash
-    docker-compose exec web python manage.py init_db
-    ```
+   docker-compose exec web python manage.py init_db
+   ```
 
 # Funzionalità Implementate
 - CRUD Prodotti e Categorie
@@ -33,3 +33,12 @@ Il modo più veloce per avviare il progetto è tramite Docker.
 - Paginazione e Ordinamento gestiti dal backend
 - Gestione errori con notifiche Toast e modali di conferma
 - Dark/Light Mode toggle per UX
+
+## Test Automatici
+
+Il progetto include una suite di test per il Backend per garantire la correttezza della logica di business, delle validazioni e dei filtri API.
+
+### Eseguire i test (Docker)
+```bash
+docker-compose exec backend python manage.py test
+```
