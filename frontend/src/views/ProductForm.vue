@@ -1,7 +1,7 @@
 <template>
   <div class="form-container">
     <h2>{{ isEdit ? 'Modifica Prodotto' : 'Nuovo Prodotto' }}</h2>
-    
+
     <form @submit.prevent="saveProduct" class="p-fluid">
       <div class="field">
         <label for="name">Nome *</label>
@@ -10,8 +10,9 @@
       </div>
 
       <div class="field">
-        <label for="description">Descrizione</label>
-        <Textarea id="description" v-model="form.description" rows="5" cols="30" />
+        <label for="description">Descrizione *</label>
+        <Textarea id="description" v-model="form.description" rows="5" cols="30" required />
+        <small v-if="!form.description && submitted" class="p-error">La descrizione è obbligatoria.</small>
       </div>
 
       <div class="field">
@@ -114,20 +115,20 @@ onMounted(() => {
 </script>
 
 <style scoped>
-    .form-container { 
-        max-width: 600px; 
-        margin: 0 auto; 
+    .form-container {
+        max-width: 600px;
+        margin: 0 auto;
     }
-    .field { 
-        margin-bottom: 1.5rem; 
-        display: flex; 
-        flex-direction: column; 
-        gap: 0.5rem; 
+    .field {
+        margin-bottom: 1.5rem;
+        display: flex;
+        flex-direction: column;
+        gap: 0.5rem;
     }
-    .actions { 
-        display: flex; 
-        justify-content: flex-end; 
-        gap: 1rem; 
-        margin-top: 2rem; 
+    .actions {
+        display: flex;
+        justify-content: flex-end;
+        gap: 1rem;
+        margin-top: 2rem;
     }
 </style>
