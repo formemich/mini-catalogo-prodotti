@@ -6,10 +6,10 @@
         </div>
 
         <div class="filters">
-            <InputText v-model="filters.search" placeholder="Cerca per nome..." @input="fetchProducts" />
-            <Select v-model="filters.category" :options="categories" optionLabel="name" optionValue="id" placeholder="Categoria" showClear @change="fetchProducts" />
-            <InputNumber v-model="filters.min_price" placeholder="Prezzo Min" mode="currency" currency="EUR" @input="fetchProducts" />
-            <InputNumber v-model="filters.max_price" placeholder="Prezzo Max" mode="currency" currency="EUR" @input="fetchProducts" />
+          <InputText v-model="filters.search" placeholder="Cerca per nome..." />
+          <Select v-model="filters.category" :options="categories" optionLabel="name" optionValue="id" placeholder="Categoria" showClear />
+          <InputNumber v-model="filters.min_price" placeholder="Prezzo Min" mode="currency" currency="EUR" @input="filters.min_price = $event.value" />
+          <InputNumber v-model="filters.max_price" placeholder="Prezzo Max" mode="currency" currency="EUR" @input="filters.max_price = $event.value" />
         </div>
         
         <DataTable :value="products" lazy :totalRecords="totalRecords" :loading="loading"
@@ -53,7 +53,7 @@
 </template>
 
 <script setup>
-import { ref, onMounted } from 'vue'
+import { ref, onMounted, watch } from 'vue'
 import { useToast } from 'primevue/usetoast'
 import api from '@/api'
 
@@ -71,6 +71,14 @@ const loading = ref(false)
 const totalRecords = ref(0)
 
 const filters = ref({ search: '', category: null, min_price: null, max_price: null })
+let timeoutId = null
+watch(filters, () => {
+  clearTimeout(timeoutId)
+  timeoutId = setTimeout(() => {
+    lazyParams.value.page = 1
+    fetchProducts()
+  }, 10)
+}, { deep: true })
 const lazyParams = ref({ page: 1, ordering: '' })
 
 const fetchCategories = async () => {
@@ -88,14 +96,16 @@ const fetchProducts = async () => {
     const params = {
       page: lazyParams.value.page,
       ordering: lazyParams.value.ordering,
-      search: filters.value.search || undefined,
-      category_id: filters.value.category || undefined,
-      min_price: filters.value.min_price || undefined,
-      max_price: filters.value.max_price || undefined
     }
+    
+    if (filters.value.search) params.search = filters.value.search
+    if (filters.value.category) params.category_id = filters.value.category
+    if (filters.value.min_price !== null) params.min_price = filters.value.min_price
+    if (filters.value.max_price !== null) params.max_price = filters.value.max_price
+
     const res = await api.get('/products/', { params })
-    products.value = res.data.results
-    totalRecords.value = res.data.count
+    products.value = res.data.results || res.data
+    totalRecords.value = res.data.count || res.data.length
   } catch (e) {
     toast.add({ severity: 'error', summary: 'Errore', detail: 'Errore nel caricamento prodotti', life: 3000 })
   } finally {
