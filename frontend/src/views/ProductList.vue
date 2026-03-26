@@ -143,6 +143,15 @@ const deleteProduct = (id) => {
     message: 'Sei sicuro di voler eliminare questo prodotto?',
     header: 'Conferma Eliminazione',
     icon: 'pi pi-exclamation-triangle',
+    rejectProps: {
+      label: 'Annulla',
+      severity: 'secondary',
+      outlined: true
+    },
+    acceptProps: {
+      label: 'Elimina',
+      severity: 'danger'
+    },
     accept: async () => {
       try {
         await api.delete(`/products/${id}/`)
