@@ -28,10 +28,15 @@
             </template>
         </Column>
 
-
         <Column field="category_id" header="Categoria">
             <template #body="{ data }">
             {{ getCategoryName(data.category_id) }}
+            </template>
+        </Column>
+
+        <Column field="tags" header="Tags">
+            <template #body="{ data }">
+            {{ data.tags && data.tags.length > 0 ? data.tags.join(', ') : 'Nessuna' }}
             </template>
         </Column>
 
@@ -41,7 +46,7 @@
             </template>
         </Column>
 
-        <Column header="Azioni">
+        <Column header="">
             <template #body="{ data }">
             <Button icon="pi pi-pencil" text @click="$router.push(`/product/${data.id}`)" />
             <Button icon="pi pi-trash" severity="danger" text @click="deleteProduct(data.id)" />

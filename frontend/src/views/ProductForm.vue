@@ -11,7 +11,7 @@
 
       <div class="field">
         <label for="description">Descrizione</label>
-        <InputText id="description" v-model="form.description" />
+        <Textarea id="description" v-model="form.description" rows="5" cols="30" />
       </div>
 
       <div class="field">
@@ -44,6 +44,7 @@ import { useToast } from 'primevue/usetoast'
 import api from '@/api'
 
 import InputText from 'primevue/inputtext'
+import Textarea from 'primevue/textarea';
 import InputNumber from 'primevue/inputnumber'
 import Select from 'primevue/select'
 import Button from 'primevue/button'
@@ -120,8 +121,8 @@ onMounted(() => {
     .field { 
         margin-bottom: 1.5rem; 
         display: flex; 
-        flex-direction: 
-        column; gap: 0.5rem; 
+        flex-direction: column; 
+        gap: 0.5rem; 
     }
     .actions { 
         display: flex; 
