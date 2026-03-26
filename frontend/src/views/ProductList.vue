@@ -22,6 +22,13 @@
             <template #body="{ data }">€ {{ data.price }}</template>
         </Column>
 
+        <Column field="description" header="Descrizione">
+            <template #body="{ data }">
+            {{ data.description ? (data.description.length > 50 ? data.description.substring(0, 50) + '...' : data.description) : 'Nessuna' }}
+            </template>
+        </Column>
+
+
         <Column field="category_id" header="Categoria">
             <template #body="{ data }">
             {{ getCategoryName(data.category_id) }}
