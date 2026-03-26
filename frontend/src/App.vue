@@ -2,7 +2,6 @@
 import Toast from 'primevue/toast'
 import { ref, onMounted } from 'vue'
 import Button from 'primevue/button'
-import Menu from 'primevue/menu'
 import { useRouter } from 'vue-router'
 
 const router = useRouter()
@@ -29,8 +28,6 @@ const menuItems = ref([
     command: () => router.push('/products/import')
   }
 ])
-
-const toggleMenu = (event) => menu.value.toggle(event)
 
 const toggleTheme = () => {
   isDark.value = !isDark.value
