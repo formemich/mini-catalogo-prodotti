@@ -1,6 +1,7 @@
 import django_filters
 from django_filters.rest_framework import DjangoFilterBackend
 from rest_framework import viewsets, filters
+from catalog.pagination import CustomPagination
 
 from catalog.models import Product, Category
 from catalog.serializers import ProductSerializer, CategorySerializer
@@ -19,6 +20,8 @@ class ProductFilter(django_filters.FilterSet):
 class ProductViewSet(viewsets.ModelViewSet):
     queryset = Product.objects.all()
     serializer_class = ProductSerializer
+
+    pagination_class = CustomPagination
 
     filter_backends = (DjangoFilterBackend, filters.OrderingFilter, filters.SearchFilter)
     filterset_class = ProductFilter
