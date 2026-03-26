@@ -25,12 +25,14 @@ import Toast from 'primevue/toast'
   header { 
     padding: 1rem; 
     margin-bottom: 1rem; 
+    background-color: #bec7ce;
+    border-radius: 8px; 
   }
   nav a { 
     text-decoration: none; 
-    color: #ffffff; 
     font-weight: bold; 
     font-size: 1.2rem; 
+    color: #ffffff;
   }
   main { 
     padding: 1.5rem; 
