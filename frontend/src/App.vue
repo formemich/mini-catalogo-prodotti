@@ -3,6 +3,7 @@ import Toast from 'primevue/toast'
 import { ref, onMounted } from 'vue'
 import Button from 'primevue/button'
 import { useRouter } from 'vue-router'
+import ConfirmDialog from 'primevue/confirmdialog'
 
 const router = useRouter()
 const isDark = ref(false)
@@ -46,6 +47,7 @@ onMounted(() => {
 <template>
   <div class="app-container">
     <Toast />
+    <ConfirmDialog />
 
     <header class="app-header">
       <nav class="nav-bar">

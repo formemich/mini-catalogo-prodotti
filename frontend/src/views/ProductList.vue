@@ -60,6 +60,7 @@
 <script setup>
 import { ref, onMounted, watch } from 'vue'
 import { useToast } from 'primevue/usetoast'
+import { useConfirm } from 'primevue/useconfirm'
 import api from '@/api'
 
 import Button from 'primevue/button'
@@ -70,6 +71,7 @@ import DataTable from 'primevue/datatable'
 import Column from 'primevue/column'
 
 const toast = useToast()
+const confirm = useConfirm()
 const products = ref([])
 const categories = ref([])
 const loading = ref(false)
@@ -136,16 +138,26 @@ const onSort = (event) => {
   fetchProducts()
 }
 
-const deleteProduct = async (id) => {
-  if (confirm('Sicuro di voler eliminare questo prodotto?')) {
-    try {
-      await api.delete(`/products/${id}/`)
-      toast.add({ severity: 'success', summary: 'Successo', detail: 'Prodotto eliminato', life: 3000 })
-      fetchProducts()
-    } catch (e) {
-      toast.add({ severity: 'error', summary: 'Errore', detail: 'Errore eliminazione', life: 3000 })
+const deleteProduct = (id) => {
+  confirm.require({
+    message: 'Sei sicuro di voler eliminare questo prodotto?',
+    header: 'Conferma Eliminazione',
+    icon: 'pi pi-exclamation-triangle',
+    accept: async () => {
+      try {
+        await api.delete(`/products/${id}/`)
+        toast.add({ severity: 'success', summary: 'Successo', detail: 'Prodotto eliminato', life: 3000 })
+        
+        if (products.value.length === 1 && lazyParams.value.page > 1) {
+          lazyParams.value.page--
+        }
+        
+        fetchProducts()
+      } catch (e) {
+        toast.add({ severity: 'error', summary: 'Errore', detail: 'Errore durante l\'eliminazione', life: 3000 })
+      }
     }
-  }
+  })
 }
 
 const getCategoryName = (id) => {
