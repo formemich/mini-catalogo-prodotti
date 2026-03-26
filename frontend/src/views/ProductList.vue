@@ -84,7 +84,7 @@ watch(filters, () => {
     fetchProducts()
   }, 10)
 }, { deep: true })
-const lazyParams = ref({ page: 1, ordering: '' })
+const lazyParams = ref({ page: 1, ordering: '', page_size: 10})
 
 const fetchCategories = async () => {
   try {
@@ -100,6 +100,7 @@ const fetchProducts = async () => {
   try {
     const params = {
       page: lazyParams.value.page,
+      page_size: lazyParams.value.page_size,
       ordering: lazyParams.value.ordering,
     }
     
@@ -112,7 +113,12 @@ const fetchProducts = async () => {
     products.value = res.data.results || res.data
     totalRecords.value = res.data.count || res.data.length
   } catch (e) {
-    toast.add({ severity: 'error', summary: 'Errore', detail: 'Errore nel caricamento prodotti', life: 3000 })
+    if (e.response && e.response.status === 404 && lazyParams.value.page > 1) {
+      lazyParams.value.page = 1
+      fetchProducts()
+    } else {
+      toast.add({ severity: 'error', summary: 'Errore', detail: 'Errore nel caricamento prodotti', life: 3000 })
+    }
   } finally {
     loading.value = false
   }
@@ -120,6 +126,7 @@ const fetchProducts = async () => {
 
 const onPage = (event) => {
   lazyParams.value.page = event.page + 1
+  lazyParams.value.page_size = event.rows
   fetchProducts()
 }
 
