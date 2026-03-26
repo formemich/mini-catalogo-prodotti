@@ -12,7 +12,7 @@
             <InputNumber v-model="filters.max_price" placeholder="Prezzo Max" mode="currency" currency="EUR" @input="fetchProducts" />
         </div>
         
-        <DataTable :value="products" lazy :totalRecords="totalRecords" :loading="loading" 
+        <DataTable :value="products" lazy :totalRecords="totalRecords" :loading="loading"
                @page="onPage" @sort="onSort"
                paginator :rows="10" :rowsPerPageOptions="[5, 10, 20]"
                responsiveLayout="scroll">
